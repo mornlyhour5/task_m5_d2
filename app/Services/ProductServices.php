@@ -2,39 +2,49 @@
 
 namespace App\Services;
 
-use App\Models\Products;
+use App\Repositories\ProductRepository;
 
 class ProductServices
 {
+
+    public function __construct(protected ProductRepository $productrepository)
+    {
+        $this->productrepository = $productrepository;
+    }
+
     public function create(array $data)
     {
-        return Products::create([
+        $data = [
             'category_id' => $data['category_id'],
             'name' => $data['name'],
             'code' => $data['code'],
             'qty' => $data['qty'],
             'create_uid' => $data['userId'],
-        ]);
+        ] ;
+
+        return $this->productrepository->create($data);
     }
 
     public function update($id, array $data)
     {
-        $product = Products::findOrFail($id);
+        $product = $this->productrepository->findId($id);
 
-        $product->update([
+        $data = [
             'category_id' => $data['category_id'],
             'name' => $data['name'],
             'code' => $data['code'],
             'qty' => $data['qty'],
             'update_uid' => $data['update_uid'],
-        ]);
+        ];
 
-        return $product;
+        return $this->productrepository->update($product, $data);
     }
 
     public function delete($id)
     {
-        Products::findOrFail($id)->delete();
+        $product = $this->productrepository->findId($id);
+
+        return $this->productrepository->delete($product);
     }
 }
 
