@@ -1,0 +1,31 @@
+<?php
+
+namespace {{ namespace }};
+
+class {{ class }}
+{
+    public function getAll()
+    {
+
+    }
+
+    public function show()
+    {
+
+    }
+
+    public function created()
+    {
+
+    }
+
+    public function update()
+    {
+
+    }
+
+    public function delete()
+    {
+
+    }
+}

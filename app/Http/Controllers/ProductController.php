@@ -10,10 +10,7 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-
-    protected $productService;
-
-    public function __construct(ProductServices $productService)
+    public function __construct(protected ProductServices $productService)
     {
         $this->productService = $productService;
     }
@@ -104,7 +101,7 @@ public function store(Request $request)
 
     public function destroy($id)
     {
-        
+
     //    Products::findOrFail($id)->delete();
 
     $this->productService->delete($id);

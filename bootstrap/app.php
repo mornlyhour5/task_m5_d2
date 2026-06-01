@@ -13,6 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
     })
+    ->withCommands([
+        App\Console\Commands\MakeCrud::class,
+        App\Console\Commands\MakeService::class,
+        App\Console\Commands\MakeRepository::class,
+    ])
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
