@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\DTO\CreateUserDTO;
+// use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\userService;
@@ -31,6 +32,12 @@ class AuthController extends Controller
     ]);
 
     $user = User::where('name', $request->name)->first();
+
+
+    //               use with enum
+    // if($user->role === Role::ADMIN->value){
+
+    // }
 
     if ($user && Hash::check($request->password, $user->password)) {
 
