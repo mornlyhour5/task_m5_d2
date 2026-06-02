@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\DTO\CreateUserDTO;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\userService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 // use Illuminate\Support\Facades\Auth;
@@ -12,48 +14,16 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function __construct(protected userService $userService)
+    {
+        $this->userService = $userService;
+    }
     public function dashboard(){
         return view('dashboard');
     }
 
     public function login(Request $request)
     {
-    //     // $name = $request->input('name');
-    //     // $password = $request->input('password');
-
-    //     // $user = User::where('password', $password)->first();
-
-    //     // if ($user && $user->name === $name) {
-    //     //     // session(['id' => $user->id]);
-    //     //     return redirect()->route('dashboard');
-    //     // }else {
-    //     //     return redirect()->back()->with('error', 'Invalid credentials');
-    //     // }
-
-    //     $credentials = $request->only('name', 'password');
-
-    // if (Auth::attempt($credentials)) {
-    //     $request->session()->regenerate(); // security
-
-    //     return redirect()->route('dashboard');
-    // }
-
-    // return back()->with('error', 'Invalid credentials');
-
-
-    //     // $name = $request->input('name');
-    //     // $password = $request->input('password');
-
-    //     // $user = User::where('name', $name)->first();
-
-    //     // if ($user && Hash::check($password, $user->password)) {
-
-    //     //     session(['id' => $user->id]);
-
-    //     //     return redirect()->route('dashboard');
-    //     // }
-
-    //     // return redirect()->back()->with('error', 'Invalid credentials');
 
         $request->validate([
         'name' => 'required',
@@ -107,6 +77,13 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->session()->flush();
-        return redirect('/');;
+        return redirect('/');
+    }
+
+    public function store(Request $request)
+    {
+        $dto = CreateUserDTO::formRequest($request);
+        $this->userService->create($dto);
+        return redirect('/')->with('success', 'Register success');
     }
 }

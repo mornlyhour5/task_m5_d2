@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\CreateProductDTO;
 use App\Models\Products;
 use App\Models\Categories;
 use App\Services\ProductServices;
@@ -23,7 +24,37 @@ class ProductController extends Controller
     return view('Products', compact('products', 'allcate'));
 }
 
+public function create(Request $request)
+{
+    // 1️⃣ Validate
+    $request->validate([
+        'category_id' => 'required|integer|exists:categories,id',
+        'name'        => 'required|string|max:255',
+        'code'        => 'required|string|unique:products,code',
+        'qty'         => 'required|integer|min:0',
+    ]);
 
+    // 2️⃣ Check session
+    $userId = session('id');
+
+    if (!$userId) {
+        return redirect('/')->with('error', 'Please login first');
+    }
+
+    // 3️⃣ Merge userId into request before creating DTO
+    $request->merge([
+        'create_uid' => $userId,
+        'update_uid' => $userId,
+    ]);
+
+    // 4️⃣ Create DTO from request
+    $dto = CreateProductDTO::fromRequest($request); // ✅ fromRequest not formRequest
+
+    // 5️⃣ Pass DTO to service
+    $product = $this->productService->createByDTO($dto);
+
+    return redirect()->back()->with('success', 'Product create successfully');
+}
 
 
 public function store(Request $request)

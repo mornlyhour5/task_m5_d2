@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\DTO\CreateProductDTO;
+use App\Models\Products;
 use App\Repositories\ProductRepository;
 
 class ProductServices
@@ -23,6 +25,11 @@ class ProductServices
         ] ;
 
         return $this->productrepository->create($data);
+    }
+
+    public function createByDTO(CreateProductDTO $dto)
+    {
+        return $this->productrepository->createByDTO($dto);
     }
 
     public function update($id, array $data)

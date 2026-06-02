@@ -18,7 +18,8 @@ Route::get('/register', function () {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);
-Route::post('/register', [AuthController::class, 'register']);
+// Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'store']);
 
 
 Route::middleware(EnsureTokenIsValid::class)->group(function () {
@@ -28,7 +29,8 @@ Route::middleware(EnsureTokenIsValid::class)->group(function () {
 
 
     Route::get('/products', [ProductController::class, 'Product']);
-    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    // Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::post('/products', [ProductController::class, 'create'])->name('products.create');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
