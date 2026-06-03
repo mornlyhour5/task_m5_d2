@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+// use App\Exceptions\NotFoundExcept;
+use App\Helpers\ApiResponse;
 use App\Models\Categories;
 use App\Services\CategoryServices;
 use Illuminate\Http\Request;
@@ -36,6 +39,24 @@ class CategoriesController extends Controller
         $this->categoryServices->create($data);
 
         return redirect()->back()->with('success', 'Categories create successfully');
+    }
+
+    public function show($id)
+    {
+        // $category = Categories::findOrFail($id);
+
+        $data = $this->categoryServices->getById($id); // throws NotFoundExcept if missing
+        return ApiResponse::success($data, 'Category found');
+
+        // if (!$category)
+        // {
+        //     throw new NotFoundExcept();
+        // }
+
+        // return response()->json([
+        //     'message' => 'Categories retrived successfully',
+        //     'data' => $category
+        // ]);
     }
 
     public function update(Request $request, $id)

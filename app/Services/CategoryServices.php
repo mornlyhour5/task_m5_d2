@@ -3,6 +3,8 @@
 namespace App\Services;
 
 // use App\Models\Categories;
+
+use App\Exceptions\NotFoundExcept;
 use App\Repositories\CategoryRepository;
 
 class CategoryServices
@@ -19,8 +21,24 @@ class CategoryServices
         return $this->categoryrepository->create($data);
     }
 
+    public function getById($id){
+        $category = $this->categoryrepository->findId($id);
+
+        if(!$category)
+        {
+            throw new NotFoundExcept("Category not found");
+        }
+
+        return $category;
+    }
+
     public function update($id, array $data){
         $category = $this->categoryrepository->findId($id);
+
+        if(!$category)
+        {
+            throw new NotFoundExcept("Category not found");
+        }
 
         $data['name'] = $data['name'];
 
@@ -31,6 +49,11 @@ class CategoryServices
     public function delete($id){
         // return Categories::FindOrFail($id)->delete();
         $category = $this->categoryrepository->findId($id);
+
+        if(!$category)
+        {
+            throw new NotFoundExcept("Category not found");
+        }
 
         return $this->categoryrepository->delete($category);
 

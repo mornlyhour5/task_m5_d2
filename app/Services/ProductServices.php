@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\DTO\CreateProductDTO;
-use App\Models\Products;
+use App\Exceptions\NotFoundExcept;
+// use App\Models\Products;
 use App\Repositories\ProductRepository;
 
 class ProductServices
@@ -12,6 +13,11 @@ class ProductServices
     public function __construct(protected ProductRepository $productrepository)
     {
         $this->productrepository = $productrepository;
+    }
+
+    public function getProducts()
+    {
+        return $this->productrepository->getAll();
     }
 
     public function create(array $data)
@@ -36,6 +42,10 @@ class ProductServices
     {
         $product = $this->productrepository->findId($id);
 
+        if(!$product){
+            throw new NotFoundExcept("Product not found");
+        }
+
         $data = [
             'category_id' => $data['category_id'],
             'name' => $data['name'],
@@ -50,6 +60,10 @@ class ProductServices
     public function delete($id)
     {
         $product = $this->productrepository->findId($id);
+
+        if(!$product){
+            throw new NotFoundExcept("Product not found");
+        }
 
         return $this->productrepository->delete($product);
     }

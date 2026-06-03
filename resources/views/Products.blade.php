@@ -23,8 +23,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-<body class="bg-gray-100 font-sans"
-    x-data="{ openAdd: false, openEdit: false, openDelete: false, currentProduct: {name: 'Coca Cola', code: 'PRO-001', qty: 24, category: 'Drinks'} }">
+<body class="bg-gray-100 font-sans" x-data="{ openAdd: false, openEdit: false, openDelete: false, currentProduct: { name: 'Coca Cola', code: 'PRO-001', qty: 24, category: 'Drinks' } }">
 
     <div class="flex min-h-screen">
         <!-- Sidebar (Same as Dashboard) -->
@@ -77,6 +76,22 @@
                         <i class="fa-solid fa-plus mr-2"></i> Add New Product
                     </button>
                 </div>
+                <form action="/products/export" method="GET" class="flex gap-3 items-center mb-4">
+
+    <input type="date"
+           name="from_date"
+           class="border px-3 py-2 rounded-lg">
+
+    <input type="date"
+           name="to_date"
+           class="border px-3 py-2 rounded-lg">
+
+    <button type="submit"
+            class="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold">
+        Export Excel
+    </button>
+
+</form>
 
                 <!-- Product Table Card -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -94,38 +109,38 @@
                         <tbody class="text-gray-700 divide-y divide-gray-100">
                             <!-- Sample Row -->
                             @forelse ($products as $pro)
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="p-4">{{ $pro->id }}</td>
-                                <td class="p-4">{{ $pro->code }}</td>
-                                <td class="p-4 font-medium">{{ $pro->name }}</td>
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="p-4">{{ $pro->id }}</td>
+                                    <td class="p-4">{{ $pro->code }}</td>
+                                    <td class="p-4 font-medium">{{ $pro->name }}</td>
 
-                                <td class="p-4">
-                                    <span
-                                        class="bg-blue-100 text-blue-600 px-2 py-1 rounded-md text-xs font-bold uppercase">
-                                        {{ $pro->category?->name ?? 'No Category' }}
-                                    </span>
-                                </td>
+                                    <td class="p-4">
+                                        <span
+                                            class="bg-blue-100 text-blue-600 px-2 py-1 rounded-md text-xs font-bold uppercase">
+                                            {{ $pro->category?->name ?? 'No Category' }}
+                                        </span>
+                                    </td>
 
-                                <td class="p-4 font-bold">{{ $pro->qty }}</td>
+                                    <td class="p-4 font-bold">{{ $pro->qty }}</td>
 
-                                <td class="p-4 text-center">
-                                    <button @click="openEdit = true"
-                                        class="text-blue-500 hover:text-blue-700 mx-2 btn-edit">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </button>
-                                    <button @click="openDelete = true"
-                                        class="text-red-500 hover:text-red-700 mx-2 btn-delete">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                    <td class="p-4 text-center">
+                                        <button @click="openEdit = true"
+                                            class="text-blue-500 hover:text-blue-700 mx-2 btn-edit">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button @click="openDelete = true"
+                                            class="text-red-500 hover:text-red-700 mx-2 btn-delete">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
 
                             @empty
-                            <tr>
-                                <td colspan="6" class="text-center p-4 text-gray-400">
-                                    No products found
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td colspan="6" class="text-center p-4 text-gray-400">
+                                        No products found
+                                    </td>
+                                </tr>
                             @endforelse
 
                         </tbody>
@@ -176,9 +191,9 @@
                                 <option value="">-- Select Category --</option>
 
                                 @foreach ($allcate as $allc)
-                                <option value="{{ $allc->id }}">
-                                    {{ $allc->name }}
-                                </option>
+                                    <option value="{{ $allc->id }}">
+                                        {{ $allc->name }}
+                                    </option>
                                 @endforeach
 
                             </select>
@@ -190,11 +205,12 @@
                             <label class="block text-sm font-bold text-gray-700 mb-1">Quantity</label>
                             <input type="number" name="qty" min="0""
                                 class=" w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500
-                                outline-none @error('qty') border-red-500 @enderror" required>
+                                outline-none @error('qty') border-red-500 @enderror"
+                                required>
 
                             <!-- បង្ហាញសារ Error បើបញ្ចូលលេខខុស -->
                             @error('qty')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -217,7 +233,8 @@
 
 
     <!-- MODAL: UPDATE PRODUCT -->
-    <div x-show="openEdit" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4" x-cloak>
+    <div x-show="openEdit"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4" x-cloak>
         <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden" @click.away="openEdit = false">
             <div class="p-6 border-b flex justify-between items-center bg-gray-50">
                 <h3 class="font-bold text-gray-800 uppercase">Update Product</h3>
@@ -251,9 +268,9 @@
                                 <option value="">-- Select Category --</option>
 
                                 @foreach ($allcate as $allc)
-                                <option value="{{ $allc->id }}">
-                                    {{ $allc->name }}
-                                </option>
+                                    <option value="{{ $allc->id }}">
+                                        {{ $allc->name }}
+                                    </option>
                                 @endforeach
 
                             </select>
@@ -261,11 +278,13 @@
 
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-1">Quantity</label>
-                            <input type="number" name="qty" min="0" id="qty" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500
-                                outline-none @error('qty') border-red-500 @enderror" required>
+                            <input type="number" name="qty" min="0" id="qty"
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500
+                                outline-none @error('qty') border-red-500 @enderror"
+                                required>
 
                             @error('qty')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -321,39 +340,38 @@
 
     <script>
         $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    $('#productTable').on('click', '.btn-edit', function () {
-        let row = $(this).closest('tr');
-        let id = row.find('td').eq(0).text().trim();
-        let code = row.find('td').eq(1).text().trim();
-        let name = row.find('td').eq(2).text().trim();
-        let category = row.find('td').eq(3).text().trim();
-        let qty = row.find('td').eq(4).text().trim();
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#productTable').on('click', '.btn-edit', function() {
+            let row = $(this).closest('tr');
+            let id = row.find('td').eq(0).text().trim();
+            let code = row.find('td').eq(1).text().trim();
+            let name = row.find('td').eq(2).text().trim();
+            let category = row.find('td').eq(3).text().trim();
+            let qty = row.find('td').eq(4).text().trim();
 
-        $('#id').val(id);
-        $('#code').val(code);
-        $('#name').val(name);
-        $('#category').val(category);
-        $('#qty').val(qty);
+            $('#id').val(id);
+            $('#code').val(code);
+            $('#name').val(name);
+            $('#category').val(category);
+            $('#qty').val(qty);
 
-        $('#editForm').attr('action', '/products/' + id);
-    });
+            $('#editForm').attr('action', '/products/' + id);
+        });
 
 
 
-    $('#productTable').on('click', '.btn-delete', function () {
-        let row = $(this).closest('tr');
-        let id = row.find('td').eq(0).text().trim();
+        $('#productTable').on('click', '.btn-delete', function() {
+            let row = $(this).closest('tr');
+            let id = row.find('td').eq(0).text().trim();
 
-        $('#delete_id').val(id);
-        $('#deleteForm').attr('action', '/products/' + id);
+            $('#delete_id').val(id);
+            $('#deleteForm').attr('action', '/products/' + id);
 
-        console.log($('#deleteForm').attr('action'));
-    });
-
+            console.log($('#deleteForm').attr('action'));
+        });
     </script>
 </body>
 

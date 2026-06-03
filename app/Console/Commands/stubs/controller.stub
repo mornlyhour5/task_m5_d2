@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\{{ name }}Service;
 
-class {{ name }} extends Controller
+class {{ name }}Controllers extends Controller
 {
 
     public function __construct(protected {{ name }}Service ${{ name }}Service)

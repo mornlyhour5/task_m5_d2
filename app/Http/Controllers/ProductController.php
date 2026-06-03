@@ -8,6 +8,9 @@ use App\Models\Categories;
 use App\Services\ProductServices;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\Auth;
+use App\Exceptions\NotFoundExcept;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductsExport;
 
 class ProductController extends Controller
 {
@@ -21,7 +24,22 @@ class ProductController extends Controller
     $products = Products::with('category')->get();
     $allcate = Categories::all();
 
+
+
     return view('Products', compact('products', 'allcate'));
+}
+
+
+public function export(Request $request)
+{
+    $query = Products::with('category');
+
+    $products = $query->get();
+
+    return Excel::download(
+        new ProductsExport($products),
+        'products.xlsx'
+    );
 }
 
 public function create(Request $request)
@@ -69,7 +87,7 @@ public function store(Request $request)
     $userId = session('id');
 
     if (!$userId) {
-        return redirect('/')->with('error', 'Please login first');
+        throw new NotFoundExcept();
     }
 
 
@@ -127,6 +145,7 @@ public function store(Request $request)
         $this->productService->update($id, $data);
 
     return redirect()->back()->with('success', 'Product update successfully');
+
 
         }
 

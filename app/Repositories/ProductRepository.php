@@ -12,6 +12,11 @@ class ProductRepository
         return Products::findOrFail($id);
     }
 
+    public function getAll()
+    {
+        return Products::all();
+    }
+
     public function create(array $data)
     {
         return Products::create($data);

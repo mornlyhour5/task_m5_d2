@@ -41,4 +41,7 @@ Route::middleware(EnsureTokenIsValid::class)->group(function () {
     Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');
     Route::put('/categories/{id}', [CategoriesController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{id}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
+
+
+    Route::get('/products/export', [ProductController::class, 'export']);
 });

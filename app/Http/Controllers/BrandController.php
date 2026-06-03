@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\BrandService;
 
-class Brand extends Controller
+class BrandController extends Controller
 {
 
     public function __construct(protected BrandService $BrandService)
