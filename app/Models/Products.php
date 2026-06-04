@@ -21,4 +21,9 @@ class Products extends Model
 {
     return $this->belongsTo(Categories::class, 'category_id');
 }
+public function importVendor(array $data): void
+{
+    dd($data);
+}
+
 }

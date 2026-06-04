@@ -33,6 +33,8 @@ Route::middleware(EnsureTokenIsValid::class)->group(function () {
     Route::post('/products', [ProductController::class, 'create'])->name('products.create');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/products/export', [ProductController::class, 'export']);
+    Route::post('/products/import', [ProductController::class, 'import']);
 
 
 
@@ -43,5 +45,4 @@ Route::middleware(EnsureTokenIsValid::class)->group(function () {
     Route::delete('/categories/{id}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
 
 
-    Route::get('/products/export', [ProductController::class, 'export']);
 });

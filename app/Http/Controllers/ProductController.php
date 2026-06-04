@@ -11,12 +11,19 @@ use Illuminate\Http\Request;
 use App\Exceptions\NotFoundExcept;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductsExport;
+use App\Imports\ProductImport;
+use App\Services\ImportDataService;
+
 
 class ProductController extends Controller
 {
-    public function __construct(protected ProductServices $productService)
+    public function __construct(
+        protected ProductServices $productService,
+        protected ImportDataService $importDataService
+        )
     {
         $this->productService = $productService;
+        $this->importDataService = $importDataService;
     }
 
     public function Product()
@@ -41,6 +48,20 @@ public function export(Request $request)
         'products.xlsx'
     );
 }
+
+public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(
+            app(ProductImport::class),
+            $request->file('file')
+        );
+
+        return redirect()->back()->with('success', 'Products imported successfully');
+    }
 
 public function create(Request $request)
 {

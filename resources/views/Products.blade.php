@@ -78,20 +78,24 @@
                 </div>
                 <form action="/products/export" method="GET" class="flex gap-3 items-center mb-4">
 
-    <input type="date"
-           name="from_date"
-           class="border px-3 py-2 rounded-lg">
+                    <input type="date" name="from_date" class="border px-3 py-2 rounded-lg">
 
-    <input type="date"
-           name="to_date"
-           class="border px-3 py-2 rounded-lg">
+                    <input type="date" name="to_date" class="border px-3 py-2 rounded-lg">
 
-    <button type="submit"
-            class="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold">
-        Export Excel
-    </button>
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold">
+                        Export Excel
+                    </button>
+                </form>
 
-</form>
+                <form action="/products/import" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <input type="file" name="file" class="border px-3 py-2 rounded-lg">
+
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                        Import Excel
+                    </button>
+                </form>
 
                 <!-- Product Table Card -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
