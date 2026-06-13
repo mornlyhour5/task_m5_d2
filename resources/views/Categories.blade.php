@@ -76,6 +76,26 @@
                         <i class="fa-solid fa-plus mr-2"></i> Add New Category
                     </button>
                 </div>
+                <form action="/categories/export" method="GET" class="flex gap-3 items-center mb-4">
+
+                    <input type="date" name="from_date" class="border px-3 py-2 rounded-lg">
+
+                    <input type="date" name="to_date" class="border px-3 py-2 rounded-lg">
+
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold">
+                        Export Excel
+                    </button>
+                </form>
+
+                <form action="/categories/import" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <input type="file" name="file" class="border px-3 py-2 rounded-lg">
+
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">
+                        Import Excel
+                    </button>
+                </form>
 
                 <!-- Category Table Card -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">

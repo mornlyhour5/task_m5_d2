@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 // use App\Exceptions\NotFoundExcept;
+
+use App\Exports\CategoryExport;
 use App\Helpers\ApiResponse;
+use App\Imports\CategoryImport;
 use App\Models\Categories;
 use App\Services\CategoryServices;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CategoriesController extends Controller
 {
@@ -91,5 +95,31 @@ class CategoriesController extends Controller
         $this->categoryServices->delete($id);
 
         return redirect()->back()->with('success', 'Category delete successfully');
+    }
+
+    public function export(Request $request)
+    {
+        $query = Categories::with('product');
+
+        $category = $query->get();
+
+        return Excel::download(
+            new CategoryExport($category),
+            'category.xlsx'
+        );
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(
+            app(CategoryImport::class),
+            $request->file('file')
+        );
+
+        return redirect()->back()->with('success', 'Category imported successfully');
     }
 }
